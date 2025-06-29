@@ -454,8 +454,8 @@ renderCUDA_alpha(
 		for (int i = 0; i < C; i++)
 			dL_dpixel[i] = dL_dpixels[i * H * W + pix_id];
 
-	float dL_dT0 = dL_dT0s[pix_id];
-	//float dL_dT1 = dL_dT1s[pix_id];
+	float dL_dT0 = inside ? dL_dT0s[pix_id] : 0;
+	//float dL_dT1 = inside ? dL_dT1s[pix_id] : 0;
 
 	float last_alpha = 0;
 	float last_color[C] = { 0 };

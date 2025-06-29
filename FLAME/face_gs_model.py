@@ -781,29 +781,13 @@ class GaussianModel:
 
         _xyz = _xyz.cpu().detach().numpy()
         _features = _features.cpu().detach().numpy()
-        n_points = _xyz.shape[0]
+        #n_points = _xyz.shape[0]
 
-        # create valid mask
-        sel_id = np.ones([n_points],dtype=np.bool)
-        set1 = np.nonzero(np.isnan(_xyz).reshape(n_points,-1).max(-1))
-        set2 = np.nonzero(np.isnan(_features).reshape(n_points,-1).max(-1))
-        # if len(set1) > 0:
-        #     print('find %d nan in set1' % len(set1))
-        # if len(set2) > 0:
-        #     print('find %d nan in set2' % len(set2))
-        for id in set1:
-            sel_id[id] = False
-        for id in set2:
-            sel_id[id] = False
-
-        def save_(filename, o):
-            np.save(filename,o[sel_id])
-
-        save_(os.path.join(path, "pos.npy"),_xyz)
-        save_(os.path.join(path, "shs.npy"),_features)
-        save_(os.path.join(path, "scale.npy"), _scaling.cpu().detach().numpy())  # 71600x3
-        save_(os.path.join(path, "rot.npy"), _rotation.cpu().detach().numpy())  # 71600x4
-        save_(os.path.join(path, "opacity.npy"), _opacity.cpu().detach().numpy())  # 71600x1
+        np.save(os.path.join(path, "pos.npy"),_xyz)
+        np.save(os.path.join(path, "shs.npy"),_features)
+        np.save(os.path.join(path, "scale.npy"), _scaling.cpu().detach().numpy())  # 71600x3
+        np.save(os.path.join(path, "rot.npy"), _rotation.cpu().detach().numpy())  # 71600x4
+        np.save(os.path.join(path, "opacity.npy"), _opacity.cpu().detach().numpy())  # 71600x1
 
         #v_biased = self._xyz
         # fetch skinning weights
@@ -839,15 +823,15 @@ class GaussianModel:
         _rotation_b = _rotation_b + init_rot
         _features_b = _features_b + init_sh
 
-        save_(os.path.join(path,"xyz_t.npy"),xyz_blendshape.cpu().detach().numpy()) # Px3x100
-        save_(os.path.join(path,"shs_t.npy"),_features_b.cpu().detach().numpy()) # PxLx3x100
-        save_(os.path.join(path,"scale_t.npy"),_scaling_b.cpu().detach().numpy()) # Px3x100
-        save_(os.path.join(path,"rot_t.npy"),_rotation_b.cpu().detach().numpy()) # Px4x100
-        save_(os.path.join(path,"opacity_t.npy"),_opacity_b.cpu().detach().numpy()) # Px1x100
+        np.save(os.path.join(path,"xyz_t.npy"),xyz_blendshape.cpu().detach().numpy()) # Px3x100
+        np.save(os.path.join(path,"shs_t.npy"),_features_b.cpu().detach().numpy()) # PxLx3x100
+        np.save(os.path.join(path,"scale_t.npy"),_scaling_b.cpu().detach().numpy()) # Px3x100
+        np.save(os.path.join(path,"rot_t.npy"),_rotation_b.cpu().detach().numpy()) # Px4x100
+        np.save(os.path.join(path,"opacity_t.npy"),_opacity_b.cpu().detach().numpy()) # Px1x100
 
-        np.save(os.path.join(path, "pos_t.npy"), pose_blendshape.cpu().detach().numpy()[:,sel_id])  # 36xPx3
-        save_(os.path.join(path, "W.npy"), W.cpu().detach().numpy()) # Px5
-        save_(os.path.join(path, "eyelid.npy"), eye_blendshape.cpu().detach().numpy()) # Px3x2
+        np.save(os.path.join(path, "pos_t.npy"), pose_blendshape.cpu().detach().numpy())  # 36xPx3
+        np.save(os.path.join(path, "W.npy"), W.cpu().detach().numpy()) # Px5
+        np.save(os.path.join(path, "eyelid.npy"), eye_blendshape.cpu().detach().numpy()) # Px3x2
 
 
     def reset_opacity(self):

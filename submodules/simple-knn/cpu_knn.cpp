@@ -146,7 +146,8 @@ float3 closesPointOnTriangle(
             }
             else
             {
-                s = clamp(-e / c, 0.f, 1.f);
+                //s = clamp(-e / c, 0.f, 1.f); // original
+                s = clamp(-d / a, 0.f, 1.f); // bugfix
                 t = 0.f;
             }
         }
